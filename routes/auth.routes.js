@@ -83,5 +83,29 @@ router.get("/login", (req, res, next) => {
 })
 
 // POST "/auth/login" => Verificar las credenciales del usuario y permitir acceso
+router.post("/login", (req, res, next) => {
+
+  console.log(req.body)
+  const { acceso, password } = req.body
+
+  // que los datos no esten vacios
+  if (acceso === "" || password === "") {
+    res.render("auth/login.hbs", {
+      errorMessage: "Debes llenar todos los datos"
+    })
+    return;
+  }
+
+
+  // 1. Buscar  el usuario registrado
+
+  // 2. Validar la contraseña
+
+  // 3. Permitir acceso a la aplicacion. Abrir una sesión de usuario.
+
+  res.redirect("/profile") // 404
+
+})
+
 
 module.exports = router;
