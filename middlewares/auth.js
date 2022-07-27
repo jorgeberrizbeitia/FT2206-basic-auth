@@ -7,7 +7,18 @@ function isLoggedIn(req, res, next) {
     // el usuario SI tiene una session activa
     next() // continua con la ejecución de la ruta
   }
-
 }
 
-module.exports = isLoggedIn
+function isAdmin(req, res, next) {
+  if (req.session.user.role === "admin") {
+    next()
+  } else {
+    res.redirect("/auth/login")
+  }
+}
+
+// module.exports = isLoggedIn
+module.exports = {
+  isLoggedIn,
+  isAdmin
+}

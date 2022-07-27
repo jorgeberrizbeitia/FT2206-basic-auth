@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const isLoggedIn = require("../middlewares/auth.js")
+const {isLoggedIn, isAdmin} = require("../middlewares/auth.js")
 
 router.get("/", isLoggedIn, (req, res, next) => {
 
@@ -18,6 +18,10 @@ router.get("/", isLoggedIn, (req, res, next) => {
 
   res.render("profile/private.hbs")
 
+})
+
+router.get("/admin", isLoggedIn, isAdmin, (req, res, next) => {
+  res.render("profile/admin.hbs")
 })
 
 

@@ -129,7 +129,8 @@ router.post("/login", async (req, res, next) => {
     req.session.user = {
       _id: foundUser._id,
       email: foundUser.email,
-      username: foundUser.username
+      username: foundUser.username,
+      role: foundUser.role
     }
   
     // espera a que la session/cookie haya sido creada correctamente antes de enviar respuesta al usuario
@@ -140,6 +141,15 @@ router.post("/login", async (req, res, next) => {
   } catch (err) {
     next(err)
   }
+
+})
+
+// GET "/auth/logout" => le permite al usuario cerrar sesssion
+router.get("/logout", (req, res, next) => {
+
+  req.session.destroy(() => {
+    res.redirect("/")
+  })
 
 })
 
