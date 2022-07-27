@@ -83,7 +83,7 @@ router.get("/login", (req, res, next) => {
 })
 
 // POST "/auth/login" => Verificar las credenciales del usuario y permitir acceso
-router.post("/login", (req, res, next) => {
+router.post("/login", async (req, res, next) => {
 
   console.log(req.body)
   const { acceso, password } = req.body
@@ -97,13 +97,49 @@ router.post("/login", (req, res, next) => {
   }
 
 
-  // 1. Buscar  el usuario registrado
+  try {
+    // 1. Buscar  el usuario registrado
+    const foundUser = await User.findOne({$or: [{username: acceso}, {email: acceso}]})
+    console.log(foundUser)
 
-  // 2. Validar la contraseña
+    if (foundUser === null) {
+      res.render("auth/login.hbs", {
+        errorMessage: "Usuario no encontrado"
+      })
+      return;
+    }
+  
+    // 2. Validar la contraseña
+    const isPasswordValid = await bcrypt.compare(password, foundUser.password)
+    console.log("isPasswordValid", isPasswordValid)
 
-  // 3. Permitir acceso a la aplicacion. Abrir una sesión de usuario.
+    if (isPasswordValid === false) {
+      res.render("auth/login.hbs", {
+        errorMessage: "Contraseña invalida"
+      })
+      return;
+    }
+  
+    // El usuario es quien dice ser. El usuario ha sido autenticado.
+    // 3. Permitir acceso a la aplicacion. Abrir una sesión de usuario.
+    // ya tenemos configurado los paquetes de express-session y mongo-connect
 
-  res.redirect("/profile") // 404
+    // esta linea de codigo general la session que será guardada en la DB
+    // ... y tambien la informacion de la cookie que será enviada al cliente.
+    req.session.user = {
+      _id: foundUser._id,
+      email: foundUser.email,
+      username: foundUser.username
+    }
+  
+    // espera a que la session/cookie haya sido creada correctamente antes de enviar respuesta al usuario
+    req.session.save(() => {
+      res.redirect("/profile") // 404
+    })
+    
+  } catch (err) {
+    next(err)
+  }
 
 })
 
