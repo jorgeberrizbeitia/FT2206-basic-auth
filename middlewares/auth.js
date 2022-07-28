@@ -17,6 +17,7 @@ function isAdmin(req, res, next) {
   }
 }
 
+// aqui el middleware que agregará variables para saber si el usuario está activo o no
 function localsUpdate(req, res, next) {
   if (req.session.user === undefined) {
     // el usuario no está logeado

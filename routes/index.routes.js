@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const {localsUpdate} = require("../middlewares/auth")
 
-// aqui el middleware que agregará variables para saber si el usuario está activo o no
+// aqui la ejecución del middleware. Ver localsUpdate en "../middlewares/auth"
 router.use(localsUpdate)
 
 /* GET home page */
