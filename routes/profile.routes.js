@@ -15,8 +15,10 @@ router.get("/", isLoggedIn, (req, res, next) => {
   // EN TODAS LAS RUTAS DE MI CODIGO yo tendre acceso a req.session.user
   // el usuario que esta activo y usando la app en esta solicitud
   console.log(req.session.user)
-
+  console.log("probando!")
+  let myVar = "patata"
   res.render("profile/private.hbs")
+
 
 })
 
