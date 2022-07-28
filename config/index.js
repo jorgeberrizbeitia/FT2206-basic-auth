@@ -40,6 +40,8 @@ module.exports = (app) => {
   // Handles access to the favicon
   app.use(favicon(path.join(__dirname, "..", "public", "images", "favicon.ico")));
 
+  // nos va a permitir acceder a req.session desde mis rutas
+  // verificar si la cookie concuerda con la session
   app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
